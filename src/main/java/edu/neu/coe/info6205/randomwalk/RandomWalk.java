@@ -16,16 +16,14 @@ public class RandomWalk {
     /**
      * Private method to move the current position, that's to say the drunkard moves
      *
-     * @param dx the distance he moves in the x direction
-     * @param dy the distance he moves in the y direction
+     * @param dx the distance he moves in the x direction.
+     * @param dy the distance he moves in the y direction.
+     * NOTE - The params could be negative or positive based on the direction the man moves
      */
     private void move(int dx, int dy) {
-        // TO BE IMPLEMENTED  do move
+        x += dx;
+        y += dy;
 
-
-        // SKELETON
-         throw new RuntimeException("Not implemented");
-        // END SOLUTION
     }
 
     /**
@@ -34,10 +32,10 @@ public class RandomWalk {
      * @param m the number of steps the drunkard takes
      */
     private void randomWalk(int m) {
-        // TO BE IMPLEMENTED 
 
-
-throw new RuntimeException("implementation missing");
+        for (int j=0; j<m; j++) {
+            randomMove();
+        }
     }
 
     /**
@@ -54,13 +52,11 @@ throw new RuntimeException("implementation missing");
      * Method to compute the distance from the origin (the lamp-post where the drunkard starts) to his current position.
      *
      * @return the (Euclidean) distance from the origin to the current position.
+     * Distance is square root of (x2-x1)^2 + (y2-y1)^2
+     * Since origin is (0,0), d = square root of (x2^2+y2^2)
      */
     public double distance() {
-        // TO BE IMPLEMENTED 
-
-        // SKELETON
-         return 0.0;
-        // END SOLUTION
+        return Math.sqrt((x*x + y*y));
     }
 
     /**
@@ -81,8 +77,9 @@ throw new RuntimeException("implementation missing");
     }
 
     public static void main(String[] args) {
-        if (args.length == 0)
+        if (args.length == 0) {
             throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
+            }
         int m = Integer.parseInt(args[0]);
         int n = 30;
         if (args.length > 1) n = Integer.parseInt(args[1]);

@@ -11,7 +11,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
 public class RandomWalkTest {
-
     @Test
     public void testMove0() {
         RandomWalk rw = new RandomWalk();
