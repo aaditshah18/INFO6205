@@ -1,6 +1,7 @@
 package edu.neu.coe.info6205.threesum;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +34,13 @@ class ThreeSumCubic implements ThreeSum {
         Collections.sort(triples);
         return triples.stream().distinct().toArray(Triple[]::new);
     }
+
+//    public void main() {
+//        int[] ints = new int[]{30, -40, -20, -10, 40, 0, 10, 5};
+//        Arrays.sort(ints);
+//        ThreeSumCubic target = new ThreeSumCubic(ints);
+//        List<Triple> triples = target.getTriples();
+//    }
 
     private final int[] a;
     private final int length;
