@@ -1,6 +1,7 @@
 package edu.neu.coe.info6205.threesum;
 
 import edu.neu.coe.info6205.util.Benchmark_Timer;
+import edu.neu.coe.info6205.util.Stopwatch;
 import edu.neu.coe.info6205.util.TimeLogger;
 import edu.neu.coe.info6205.util.Utilities;
 
@@ -13,6 +14,30 @@ public class ThreeSumBenchmark {
         this.runs = runs;
         this.supplier = new Source(n, m).intsSupplier(10);
         this.n = n;
+
+//        int[] ints = supplier.get();
+//
+//        ThreeSum threeSumQuadratricBenchmark = new ThreeSumQuadratic(ints);
+//        ThreeSum threeSumQuadraticWithCalipers = new ThreeSumQuadraticWithCalipers(ints);
+//        ThreeSum threeSumCubicBenchmark = new ThreeSumCubic(ints);
+//        ThreeSum threeSumQuadrithmic = new ThreeSumQuadrithmic(ints);
+//
+//        Stopwatch timer1 = new Stopwatch();
+//        Triple[] triples1 = threeSumQuadratricBenchmark.getTriples();
+//        long time1 = timer1.lap();
+//
+//        Stopwatch timer2 = new Stopwatch();
+//        Triple[] triples2 = threeSumQuadraticWithCalipers.getTriples();
+//        long time2 = timer2.lap();
+//
+//        Stopwatch timer3 = new Stopwatch();
+//        Triple[] triples3 = threeSumCubicBenchmark.getTriples();
+//        long time3 = timer3.lap();
+//
+//        Stopwatch timer4 = new Stopwatch();
+//        Triple[] triples4 = threeSumQuadrithmic.getTriples();
+//        long time4 = timer4.lap();
+
     }
 
     public void runBenchmarks() {
@@ -29,21 +54,41 @@ public class ThreeSumBenchmark {
         new ThreeSumBenchmark(10, 2000, 2000).runBenchmarks();
         new ThreeSumBenchmark(5, 4000, 4000).runBenchmarks();
         new ThreeSumBenchmark(3, 8000, 8000).runBenchmarks();
-        new ThreeSumBenchmark(2, 16000, 16000).runBenchmarks();
+//        new ThreeSumBenchmark(2, 16000, 16000).runBenchmarks();
     }
 
     private void benchmarkThreeSum(final String description, final Consumer<int[]> function, int n, final TimeLogger[] timeLoggers) {
         if (description.equals("ThreeSumCubic") && n > 4000) return;
-        // TO BE IMPLEMENTED 
 
+        int[] ints = supplier.get();
 
+        ThreeSum threeSumQuadratricBenchmark = new ThreeSumQuadratic(ints);
+        ThreeSum threeSumQuadraticWithCalipers = new ThreeSumQuadraticWithCalipers(ints);
+        ThreeSum threeSumCubicBenchmark = new ThreeSumCubic(ints);
+        ThreeSum threeSumQuadrithmic = new ThreeSumQuadrithmic(ints);
 
+        Stopwatch timer1 = new Stopwatch();
+        Triple[] triples1 = threeSumQuadratricBenchmark.getTriples();
+        long time1 = timer1.lap();
 
+        Stopwatch timer2 = new Stopwatch();
+        Triple[] triples2 = threeSumQuadraticWithCalipers.getTriples();
+        long time2 = timer2.lap();
 
+        Stopwatch timer3 = new Stopwatch();
+        Triple[] triples3 = threeSumCubicBenchmark.getTriples();
+        long time3 = timer3.lap();
 
+        Stopwatch timer4 = new Stopwatch();
+        Triple[] triples4 = threeSumQuadrithmic.getTriples();
+        long time4 = timer4.lap();
 
+        System.out.println("N = "+ ints.length);
+        System.out.println(" time taken for: ThreeSumQuadratic : "+ time1+"ms" );
+        System.out.println(" time taken for: ThreeSumQuadraticWithCalipers : "+ time2+"ms" );
+        System.out.println(" time taken for: ThreeSumCubic : "+ time3+"ms" );
+        System.out.println(" time taken for: ThreeSumQuadrithmic : "+ time4+"ms" );
 
-throw new RuntimeException("implementation missing");
     }
 
     private final static TimeLogger[] timeLoggersCubic = {

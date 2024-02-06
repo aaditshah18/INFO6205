@@ -2,11 +2,15 @@
   (c) Copyright 2018, 2019 Phasmid Software
  */
 package edu.neu.coe.info6205.sort.elementary;
+import java.util.Random;
+import java.util.Arrays;
 
 import edu.neu.coe.info6205.sort.BaseHelper;
 import edu.neu.coe.info6205.sort.Helper;
 import edu.neu.coe.info6205.sort.SortWithHelper;
 import edu.neu.coe.info6205.util.Config;
+import edu.neu.coe.info6205.util.Timer;
+
 
 /**
  * Class InsertionSort.
@@ -63,12 +67,54 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
     public void sort(X[] xs, int from, int to) {
         final Helper<X> helper = getHelper();
 
-        // TO BE IMPLEMENTED 
+        int currentIndex, previousIndex;
+        for (currentIndex = from; currentIndex < to; currentIndex++) {
+            previousIndex = currentIndex;
 
+            while (previousIndex > from) {
+                if (helper.swapConditional(xs, previousIndex - 1, previousIndex))
+                    previousIndex = previousIndex - 1;
+                else
+                    break;
+            }
+        }
+    }
 
+    public static void main(String[] args) {
+        // Define different values of n following the doubling method
+        int[] ns = {10000, 20000, 40000, 80000, 160000};
 
+        for (int n : ns) {
+            Integer[] array = generateRandomArray(n);
+            benchmarkInsertionSort(array);
+        }
+    }
 
-throw new RuntimeException("implementation missing");
+    // Method to generate a random Integer array
+    private static Integer[] generateRandomArray(int n) {
+        Integer[] array = new Integer[n];
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            array[i] = random.nextInt();
+        }
+        return array;
+    }
+
+    // Method to benchmark insertion sort using Timer and print results
+    private static void benchmarkInsertionSort(Integer[] array) {
+        Timer timer = new Timer();
+
+        double meanLapTime = timer.repeat(10, false,
+                () -> Arrays.copyOf(array, array.length),
+                arr -> {
+                    new InsertionSort<Integer>().sort(arr, 0, arr.length);
+                    return null; // The sort modifies the array in place, and we don't need a result.
+                },
+                null, // preFunction not provided
+                null  // No postFunction
+        );
+
+        System.out.println("Array Size (n = " + array.length + "): " + meanLapTime + " milliseconds");
     }
 
     public static final String DESCRIPTION = "Insertion sort";
