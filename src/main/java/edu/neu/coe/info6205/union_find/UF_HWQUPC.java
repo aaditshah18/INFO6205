@@ -8,6 +8,7 @@
 package edu.neu.coe.info6205.union_find;
 
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Height-weighted Quick Union with Path Compression
@@ -81,13 +82,13 @@ public class UF_HWQUPC implements UF {
     public int find(int p) {
         validate(p);
         int root = p;
-        // TO BE IMPLEMENTED 
-
-
-
-
-
-throw new RuntimeException("implementation missing");
+        while (root != parent[root]) {
+            if (pathCompression) {
+                doPathCompression(root);
+            }
+            root = parent[root];
+        }
+        return root;
     }
 
     /**
@@ -173,25 +174,52 @@ throw new RuntimeException("implementation missing");
     private boolean pathCompression;
 
     private void mergeComponents(int i, int j) {
-        // TO BE IMPLEMENTED  make shorter root point to taller one
+        if (i == j) {
+            return;
+        }
 
-
-
-
-
-
-
-        // SKELETON
-        // END SOLUTION
+        if (height[j] > height[i]) {
+            updateParent(i, j);
+            updateHeight(j, i);
+        } else {
+            updateParent(j, i);
+            updateHeight(i, j);
+        }
     }
 
     /**
      * This implements the single-pass path-halving mechanism of path compression
      */
     private void doPathCompression(int i) {
-        // TO BE IMPLEMENTED  update parent to value of grandparent
-
-        // SKELETON
-        // END SOLUTION
+        parent[i] = parent[parent[i]];
     }
+
+    public static int count(int n) {
+        UF_HWQUPC uf = new UF_HWQUPC(n);
+
+        int connections = 0;
+        Random random = new Random();
+
+        while (uf.components() > 1) {
+            int p = random.nextInt(n);
+            int q = random.nextInt(n);
+
+            if (!uf.connected(p, q)) {
+                uf.union(p, q);
+                connections++;
+            }
+        }
+
+        return connections;
+    }
+
+    public static void main(String[] args) {
+        int[] nValues = {100, 500, 1000, 2000, 10000, 10000000}; // You can modify this array with your desired values of n
+
+        for (int n : nValues) {
+            int connections = count(n);
+            System.out.println("For n = " + n + ", Number of connections generated: " + connections);
+        }
+    }
+
 }
