@@ -214,7 +214,7 @@ public class UF_HWQUPC implements UF {
     }
 
     public static void main(String[] args) {
-        int[] nValues = {100, 500, 1000, 2000, 10000, 10000000}; // You can modify this array with your desired values of n
+        int[] nValues = {100, 500, 1000, 2000, 10000, 10000}; // You can modify this array with your desired values of n
 
         for (int n : nValues) {
             int connections = count(n);

@@ -54,35 +54,53 @@ public class MergeSort<X extends Comparable<X>> extends SortWithHelper<X> {
         sort(a, aux, from, to);
     }
 
-    private void sort(X[] a, X[] aux, int from, int to) {
+    private void sort(X[] source, X[] auxiliary, int from, int to) {
         final Helper<X> helper = getHelper();
         Config config = helper.getConfig();
         boolean insurance = config.getBoolean(MERGESORT, INSURANCE);
         boolean noCopy = config.getBoolean(MERGESORT, NOCOPY);
+
+        // Check if the range is small enough to be sorted using insertion sort
         if (to <= from + helper.cutoff()) {
-            insertionSort.sort(a, from, to);
+            insertionSort.sort(source, from, to);
             return;
         }
 
-        // TO BE IMPLEMENTED  : implement merge sort with insurance and no-copy optimizations
+        // Check if the array is already sorted and insurance optimization is enabled
+        if (insurance && isSorted(source, from, to, helper)) return;
 
+        // TO BE IMPLEMENTED: Implement merge sort with insurance and no-copy optimizations
 
+        // Calculate the midpoint of the range
+        int mid = from + (to - from) / 2;
 
+        if (noCopy) {
+            // Sort the auxiliary array based on the current state of the source array
+            sort(auxiliary, source, from, mid);
+            sort(auxiliary, source, mid, to);
 
+            // Merge without copying: auxiliary roles of source and auxiliary arrays are switched
+            merge(auxiliary, source, from, mid, to);
+        } else {
+            // Normal merge sort: sort halves of the source array, merge into auxiliary array, then copy back to source array
+            sort(source, auxiliary, from, mid);
+            sort(source, auxiliary, mid, to);
+            merge(source, auxiliary, from, mid, to);
 
-
-
-
-
-
-
-
-
-
-
-
-throw new RuntimeException("implementation missing");
+            // Copy back if not using the no-copy optimization
+            System.arraycopy(auxiliary, from, source, from, to - from);
+        }
     }
+
+    private boolean isSorted(X[] a, int from, int to, Helper<X> helper) {
+        for (int i = from + 1; i < to; i++) {
+            if (helper.less(a[i], a[i - 1])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     // CONSIDER combine with MergeSortBasic perhaps.
     private void merge(X[] sorted, X[] result, int from, int mid, int to) {
